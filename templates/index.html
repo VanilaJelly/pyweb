@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+<h4> 여성안심귀가 이용현황 </h4>
+
+<table id = "jqGrid"></table>
+<div id = "jqGridPager"></div>
+
+<script type = "text/javascript">
+    $(function() {
+            'use strict';
+            var mydata = [];
+
+            {% for item in dataset %}
+                var idd = {{ item.id + 1 }};
+                var dte = {{ item.date }};
+                var itg = {{ item.value }};
+                mydata.push({id: idd, date: dte, integer: itg});
+            {% endfor %}
+
+            
+            $("#jqGrid").jqGrid({
+            datatype: "local",
+            data: mydata,
+            colNames: ['id', 'date', 'integer'],
+            colModel: [
+                {name: 'id', index: 'id', align: 'center', width: 30, sorttype: 'number'},
+                {name: 'date', index: 'date', align: 'center', width: 150, sorttype: 'number'},
+                {name: 'integer', index: 'integer', align: 'center', width: 150, sorttype: 'number'},
+            ],
+
+            viewrecords: true,
+            rowNum: 20,
+            width: 780,
+            height: 250,
+            pager: '#jqGridPager',
+            caption: "여성안심귀가 스카우트 이용현황-2014년 기준"
+        });
+    });
+</script>
+
+
+{% endblock %}

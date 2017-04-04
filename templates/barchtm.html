@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+
+         <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>   
+        <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/redmond/jquery-ui.css" />   
+        <script src = "https://cdn.jsdelivr.net/chart.js/2.2.1/Chart.min.js"> </script>
+        <script src = "https://cdn.jsdelivr.net/chart.js/2.2.1/Chart.bundle.min.js"> </script>
+
+        <meta charset = "UTF-8">
+        <title> Smlee- individual task step6 </title>
+    </head>
+    <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script> 
+    'use strict';
+    var value = [];
+    var month = [];
+    var i = 0;
+    var j = 0;
+    var sum = 0;
+    var prev = "";
+
+    {% for item in dataset %}
+        var mth = {{ item.month }};
+        var val = {{ item.value }};
+        var date = {{ item.date }};
+
+        if (j==0){
+            sum = val;
+            month.push(mth);
+            prev = mth;
+        }
+        else if (mth == prev && j > 0){
+            sum = val + sum;
+        }
+        else{
+            value.push(sum);
+            sum = val;
+            if (j != 2){
+                month.push(mth);
+                prev = mth;
+            }
+        }
+        j = j + 1;
+    {% endfor %}
+    value.push(sum);
+
+
+    var ctx = document.getElementById("myChart");
+
+    var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: month,
+        datasets: [{
+            label: '여성안심귀가 이용현황',
+            data: value,
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+    </script>
+    </body>
+</html>

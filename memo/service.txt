@@ -1,0 +1,20 @@
+#NB60266.service
+#located in /etc/systemd/system
+#use sudo systemctl start NB60266 to start
+
+[Unit]
+Description=uWSGI instance to serve NB60266
+After=network.target
+
+[Service]
+User=irteamsu
+Group=nginx
+WorkingDirectory=/home1/irteamsu/NB60266
+Environment="PATH=/home1/irteamsu/venv/proj/bin" #the location of virtual env using
+ExecStart=/home1/irteamsu/venv/proj/bin/uwsgi --ini NB60266.ini
+
+[Install]
+WantedBy=multi-user.target
+
+
+#check NB60266.sock file generated after start it

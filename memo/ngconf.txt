@@ -1,0 +1,16 @@
+# /etc/nginx/nginx.conf
+#above original server{} add like following
+
+server{
+    listen 80; #default channel
+    server_name 10.110.240.10 ]; #make sure it is equal to server name of flask code(the reason of 404)
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:///home1/irteamsu/NB60266/NB60266.sock; #check permission (more than 755)
+    }
+}
+
+#the permission of all route through NB60266.sock must equal or exeed 755(502, permission denied)
+#make sure NB60266.sock generated after run NB60266.service (if not, check /tmp)
+
